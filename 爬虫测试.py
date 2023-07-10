@@ -1,4 +1,3 @@
-
 import time
 import traceback
 import random
@@ -15,6 +14,8 @@ from selenium.webdriver.support import expected_conditions
 import logging as log
 
 # 获取chrome浏览器驱动路径
+
+
 def get_chrome_driver(s_chrome_driver_dir=None):
     if not s_chrome_driver_dir:
         print("浏览器驱动的配置路径(%s)没有配置" % s_chrome_driver_dir)
@@ -64,7 +65,8 @@ class SeleniumUse(object):
             print(f'查找管理员ID控件失败.')
             return False
 
-        l_admin_id_labels = self.p_driver.find_elements(By.XPATH, s_admin_id_label)
+        l_admin_id_labels = self.p_driver.find_elements(
+            By.XPATH, s_admin_id_label)
         for p_admin in l_admin_id_labels:
             log.debug(f"p_admin.text = {p_admin.text}")
             if s_current_admin_id not in p_admin.text:
@@ -97,12 +99,14 @@ class SeleniumUse(object):
                 p_element = self.get_find_element(s_element_xpath)
                 if not p_element:
                     continue
-                self.p_driver.execute_script("arguments[0].scrollIntoView();", p_element)
+                self.p_driver.execute_script(
+                    "arguments[0].scrollIntoView();", p_element)
                 log.info(f'滑动元素{s_name}({s_element_xpath})成功')
                 return True
             except Exception as p_error:
                 if b_print:
-                    print(f'第[{i + 1}/3]次滑动元素{s_name}{s_element_xpath}失败-({p_error})')
+                    print(
+                        f'第[{i + 1}/3]次滑动元素{s_name}{s_element_xpath}失败-({p_error})')
         print(f'3次滑动找元素{s_name}{s_element_xpath}失败！')
         return False
 
@@ -113,12 +117,14 @@ class SeleniumUse(object):
                 p_element = self.get_find_element(s_element_xpath)
                 if not p_element:
                     continue
-                self.p_driver.execute_script("arguments[0].click();", p_element)
+                self.p_driver.execute_script(
+                    "arguments[0].click();", p_element)
                 log.info(f'点击元素{s_name}-({s_element_xpath})成功')
                 return True
             except Exception as p_error:
                 if b_print:
-                    print(f'第[{i + 1}/3]次点击元素{s_name}-{s_element_xpath}失败-({p_error})')
+                    print(
+                        f'第[{i + 1}/3]次点击元素{s_name}-{s_element_xpath}失败-({p_error})')
         print(f'3次点击元素{s_name}-{s_element_xpath}失败！')
         return False
 
@@ -146,9 +152,11 @@ class SeleniumUse(object):
         for i_times in range(i_limit):
             try:
                 if b_is_clickable:
-                    p_web_driver_wait.until(EC.element_to_be_clickable((By.XPATH, s_element_xpath)))
+                    p_web_driver_wait.until(
+                        EC.element_to_be_clickable((By.XPATH, s_element_xpath)))
                 else:
-                    p_web_driver_wait.until(EC.presence_of_element_located((By.XPATH, s_element_xpath)))
+                    p_web_driver_wait.until(
+                        EC.presence_of_element_located((By.XPATH, s_element_xpath)))
                 return True, None
             except Exception as wait_error:
                 s_wait_error = f"{s_wait_error} - {wait_error}"
@@ -269,7 +277,6 @@ def login_info(p_selenium_use):
     print('已完成登陆')
 
 
-
 def go_self_info(p_selenium_use):
     s_xpath_route = '//*[@id="douyin-header"]/div[1]/header/div/div/div[2]/div/div/div[7]/div/a'
     if not p_selenium_use.wait_element_appear(s_xpath_route, '点头像'):
@@ -281,26 +288,30 @@ def go_self_info(p_selenium_use):
         return False, f'点击关注按钮失败！'
 
     s_xpath_route = '/html/body/div[3]/div/div/div[2]/div/div[4]/div[1]/div'
-    l_people = p_selenium_use.p_driver.find_elements(By.XPATH, s_xpath_route)
+    l_people = p_selenium_use.p_driver.find_elements(
+        By.XPATH, s_xpath_route)
     print(len(l_people))
     for i in range(len(l_people)):
         x_now = 1 + 3 * i
         s_xpath_route = f'/html/body/div[3]/div/div/div[2]/div/div[4]/div[1]/div[{x_now}]/div[2]/div[1]/div[1]/a/span/span/span/span/span/span'
         # print(s_xpath_route)
-        l_admin_id_labels = p_selenium_use.p_driver.find_elements(By.XPATH, s_xpath_route)
+        l_admin_id_labels = p_selenium_use.p_driver.find_elements(
+            By.XPATH, s_xpath_route)
         if l_admin_id_labels:
             print(f'{x_now}')
             s_now_name = l_admin_id_labels[0].text
             print(f's_now_name={s_now_name}')
             s_xpath_route = f'/html/body/div[3]/div/div/div[2]/div/div[4]/div[1]/div[{x_now}]/div[2]/div[1]/div[2]/span'
-            l_admin_id_labels = p_selenium_use.p_driver.find_elements(By.XPATH, s_xpath_route)
+            l_admin_id_labels = p_selenium_use.p_driver.find_elements(
+                By.XPATH, s_xpath_route)
             if not l_admin_id_labels:
                 s_now_info = ''
             else:
                 s_now_info = l_admin_id_labels[0].text
             print(f's_now_info = {s_now_info}')
             s_xpath_route = f'/html/body/div[3]/div/div/div[2]/div/div[4]/div[1]/div[{x_now}]/div[2]/div[2]/span/span/span/span/span/span'
-            l_admin_id_labels = p_selenium_use.p_driver.find_elements(By.XPATH, s_xpath_route)
+            l_admin_id_labels = p_selenium_use.p_driver.find_elements(
+                By.XPATH, s_xpath_route)
             if not l_admin_id_labels:
                 s_now_title = ''
             else:
@@ -339,6 +350,7 @@ def main_step():
     go_self_info(p_selenium_use)
     p_selenium_use.p_driver.close()
     p_selenium_use.p_driver.quit()
+
 
 if __name__ == '__main__':
     main_step()
